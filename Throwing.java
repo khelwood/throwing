@@ -1,3 +1,8 @@
+/**
+ * This class contains ways to trick the compiler into
+ * letting checked exceptions through unchecked.
+ * Use with caution.
+ */
 public class Throwing {
 
     private Throwing() {}
@@ -8,14 +13,11 @@ public class Throwing {
      * Can be interpreted as a {@code Function}, even if it throws a checked exception.
      * This allows you to pass an exception-throwing function into a method that requires a {@code Function},
      * but you should still handle the exception in the surrounding scope.
-     * </p><p>
-     *     This is all a way to trick the compiler into moving where checked exceptions are checked,
-     *     so use with caution.
      * </p><p>Example:
      * <pre>
      * try {
      *     Stream.of("Alpha", "Beta")
-     *           .map(ThrowingFunction.of(this::someFunctionThatThrowsIOException)
+     *           .map(Throwing.Function.of(this::someFunctionThatThrowsIOException)
      *           .forEach(System.out::println);
      * } catch (IOException e) {
      *     e.printStackTrace();
