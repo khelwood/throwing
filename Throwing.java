@@ -59,7 +59,7 @@ public class Throwing {
 
         @Override
         default void accept(T t) {
-            ((Throwing.Consumer<T, RuntimeException>) this).accept(t);
+            ((Throwing.Consumer<T, RuntimeException>) this).throwingAccept(t);
         }
 
         static <T, E extends Throwable> java.util.function.Consumer<T> of(Throwing.Consumer<T, E> tc) throws E {
