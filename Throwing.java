@@ -17,53 +17,53 @@ public class Throwing {
      * <pre>
      * try {
      *     Stream.of("Alpha", "Beta")
-     *           .map(Throwing.Function.of(this::someFunctionThatThrowsIOException)
+     *           .map(Throwing.function(this::someFunctionThatThrowsIOException)
      *           .forEach(System.out::println);
      * } catch (IOException e) {
      *     e.printStackTrace();
      * }
      * </pre></p>
-     * @author dr6
      */
     @FunctionalInterface
-    public interface Function<T, R, E extends Throwable> extends java.util.function.Function<T, R> {
-        R throwingApply(T t) throws E;
+    public interface Function<T, R, X extends Throwable> extends java.util.function.Function<T, R> {
+        R throwingApply(T t) throws X;
 
         @Override
         default R apply(T t) {
             return ((Throwing.Function<T, R, RuntimeException>) this).throwingApply(t);
         }
 
-        static <T, R, E extends Throwable> java.util.function.Function<T, R> of(Throwing.Function<T, R, E> tf) throws E {
-            return tf;
-        }
     }
 
     @FunctionalInterface
-    public interface Supplier<T, E extends Throwable> extends java.util.function.Supplier<T> {
-        T throwingGet() throws E;
+    public interface Supplier<T, X extends Throwable> extends java.util.function.Supplier<T> {
+        T throwingGet() throws X;
 
         @Override
         default T get() {
             return ((Throwing.Supplier<T, RuntimeException>) this).throwingGet();
         }
-
-        static <T, E extends Throwable> java.util.function.Supplier<T> of(Throwing.Supplier<T, E> ts) throws E {
-            return ts;
-        }
     }
 
     @FunctionalInterface
-    public interface Consumer<T, E extends Throwable> extends java.util.function.Consumer<T> {
-        void throwingAccept(T t);
+    public interface Consumer<T, X extends Throwable> extends java.util.function.Consumer<T> {
+        void throwingAccept(T t) throws X;
 
         @Override
         default void accept(T t) {
             ((Throwing.Consumer<T, RuntimeException>) this).throwingAccept(t);
         }
+    }
 
-        static <T, E extends Throwable> java.util.function.Consumer<T> of(Throwing.Consumer<T, E> tc) throws E {
-            return tc;
-        }
+    public static <T, R, X extends Throwable> java.util.function.Function<T, R> function(Throwing.Function<T, R, X> tf) throws X {
+        return tf;
+    }
+
+    public static <T, X extends Throwable> java.util.function.Supplier<T> supplier(Throwing.Supplier<T, X> ts) throws X {
+        return ts;
+    }
+
+    public static <T, X extends Throwable> java.util.function.Consumer<T> consumer(Throwing.Consumer<T, X> tc) throws X {
+        return tc;
     }
 }
